@@ -1,30 +1,18 @@
-#!/usr/bin/env python3
-"""Recipe 7: Advanced Custom Components (Mappers, Modulations, and Callbacks).
+# Advanced Custom Components
+
+[View full source code on GitHub](https://github.com/arjunmnath/MaRN/blob/main/cookbook/07_advanced_custom_components.py)
+
+## Explanation
+Recipe 7: Advanced Custom Components (Mappers, Modulations, and Callbacks).
 
 This recipe demonstrates the extensible architecture of MaRN.
 We will:
 1. Implement a custom training callback (`WeightSnapshotCallback`) that monitors
    the generated weights of a specific layer across epochs.
 2. Train the target model using these custom extensions.
-"""
 
-import torch
-import torch.nn as nn
-from torch.utils.data import DataLoader, TensorDataset
-from marn import (
-    MappingModel,
-    MappingLoss,
-    ClassificationLoss,
-    MappingTrainer,
-    TrainerConfig,
-    Callback,
-)
-
-
-from typing import Any
-
-
-# 1. Define a Custom Callback
+## Key Parts
+```python
 class WeightSnapshotCallback(Callback):
     """Callback to monitor parameter generation dynamics by snapshotting weights."""
 
@@ -100,7 +88,4 @@ def main() -> None:
     print(
         "\nCustom components successfully registered, initialized, and evaluated during training!"
     )
-
-
-if __name__ == "__main__":
-    main()
+```

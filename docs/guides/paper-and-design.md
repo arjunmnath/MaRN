@@ -25,10 +25,10 @@ The paper presents two training arrangements:
 - Single Latent Vector Training (SLVT) maps one latent vector to all target parameters. It is simple
   but its fixed projection can become prohibitively large.
 - Layer-wise Training (LWT) assigns smaller latent vectors and mappings to separate layers. This is
-  the package's planned default because it has a more practical memory profile.
+  the package default (`strategy="layerwise"`) because it has a more practical memory profile.
 
-The proposed Mapping Loss combines task, stability, smoothness, and alignment terms. Those losses
-will be implemented in a later milestone after the mapper and generator contracts are stable.
+The Mapping Loss combines task, stability, smoothness, and alignment terms. All four are implemented
+in `MappingLoss` and configured through [Loss system guide](loss-system.md) and `LossConfig`.
 
 ## Package interpretation
 
@@ -44,9 +44,10 @@ for each call so training-mode BatchNorm cannot mutate the wrapped target.
 The complete design adds several engineering extensions around the paper:
 
 - Layer-wise generation is the default, with SLVT retained as a baseline.
-- Grouped generation will cover custom parameter partitions and shared fine-tuning modulation.
+- Grouped generation covers custom parameter partitions; fine-tuning and LRD strategies extend the
+  same generator/strategy pattern.
 - Mapper, modulation, generator, and loss implementations use explicit interfaces and registries.
-- Checkpoints will store latent and reconstruction state, not ephemeral generated target weights.
+- Checkpoints store latent and reconstruction state, not ephemeral generated target weights.
 - Scientific claims are not treated as software guarantees. Tests establish tensor semantics,
   gradient flow, immutability, and reproducibility rather than universal model quality.
 
@@ -57,5 +58,6 @@ features carry semantic constraints that a generator must preserve; silently exp
 bypassing a parametrization would produce a different model. Support can be added later through an
 explicit alias/transformation-aware parameter specification.
 
-Only the parameter runtime and stateless target wrapper are implemented today. The ergonomic
-training API shown in the package objective is planned, not yet available.
+The full training stack—`MappingModel`, `MappingLoss`, `MappingTrainer`, configs, registries, and
+checkpointing—is available. See the [Cookbook](../cookbook/index.md) for end-to-end scripts and
+[Extension recipes](extension-recipes.md) for custom components.

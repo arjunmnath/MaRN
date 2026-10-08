@@ -1,5 +1,7 @@
 # Distributed & Memory
 
+DDP setup, model wrapping, and memory profiling helpers.
+
 ```{eval-rst}
 .. currentmodule:: marn.distributed
 

@@ -1,5 +1,7 @@
 # Strategies
 
+Declare which target parameters each latent group owns (paired with a generator).
+
 ```{eval-rst}
 .. currentmodule:: marn.strategies
 

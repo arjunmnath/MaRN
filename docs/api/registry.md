@@ -1,5 +1,7 @@
 # Registry
 
+Plugin registries for mappers, modulation, generators, and losses.
+
 ```{eval-rst}
 .. currentmodule:: marn.registry
 

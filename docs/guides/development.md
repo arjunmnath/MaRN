@@ -24,13 +24,13 @@ consistent environment.
 
 ## Documentation policy
 
-Documentation is developed with each implementation milestone:
+Documentation expectations:
 
 1. Add or update a Markdown page under `docs/` for every new public contract.
-2. Use examples that run against the APIs implemented in that milestone.
+2. Prefer runnable examples—mirror them in `cookbook/` when the flow is non-trivial.
 3. Label planned behavior explicitly instead of documenting it as available.
 4. Record unsupported semantics and their failure behavior.
-5. Link new pages from `docs/index.md` and update `progress.md` in the same change.
+5. Link new pages from `docs/guides/index.md`, `docs/api/index.md`, or `docs/cookbook/` as appropriate.
 
 ## Design invariants
 

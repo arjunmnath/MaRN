@@ -54,7 +54,7 @@ jobs:
       run: poetry install --no-interaction
 
     - name: Type check
-      run: poetry run mypy src tests examples benchmarks cookbook
+      run: poetry run mypy src tests benchmarks cookbook
 
   test:
     runs-on: ubuntu-latest

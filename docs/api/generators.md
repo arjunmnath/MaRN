@@ -1,5 +1,7 @@
 # Generators
 
+Build `ParameterTree` instances from latents for a chosen layout (SLVT, layerwise, grouped, …).
+
 ```{eval-rst}
 .. currentmodule:: marn.generators
 

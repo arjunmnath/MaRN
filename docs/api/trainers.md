@@ -1,5 +1,7 @@
 # Trainers
 
+Training loop, batch adapters, and learning-rate finder utilities.
+
 ```{eval-rst}
 .. currentmodule:: marn.trainers
 

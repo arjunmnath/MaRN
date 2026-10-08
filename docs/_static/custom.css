@@ -1,0 +1,82 @@
+/* Optional: classic serif headings */
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&display=swap");
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Lora", Georgia, "Times New Roman", serif;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Light: ivory & ink ---------- */
+html[data-theme="light"] {
+  --pst-color-primary: #3d5a73;
+  --pst-color-secondary: #5a7257;
+  --pst-color-accent: #b5654a;
+
+  --pst-color-link: #3d5a73;
+  --pst-color-link-hover: #b5654a;
+
+  --pst-color-background: #faf8f4;
+  --pst-color-on-background: #faf8f4;
+  --pst-color-surface: #f2eee6;
+  --pst-color-on-surface: #e7e1d4;
+
+  --pst-color-text-base: #2b2a28;
+  --pst-color-text-muted: #6f6a60;
+  --pst-color-heading-color: #26384a;
+
+  --pst-color-inline-code: #9a4f3a;
+  --pst-color-target: #f3e6c4;
+  --pst-color-table-row-hover-bg: #efe9dc;
+  --pst-color-border: #ddd6c7;
+  --pst-color-shadow: #d8d1c2;
+
+  --pst-color-info: #4a7a8c;
+  --pst-color-success: #5a7257;
+  --pst-color-warning: #c08a3e;
+  --pst-color-danger: #a94442;
+}
+
+/* ---------- Dark: warm charcoal ---------- */
+html[data-theme="dark"] {
+  --pst-color-primary: #9db4c8;
+  --pst-color-secondary: #a3b899;
+  --pst-color-accent: #d9a38a;
+
+  --pst-color-link: #9db4c8;
+  --pst-color-link-hover: #d9a38a;
+
+  --pst-color-background: #1c1b19;
+  --pst-color-on-background: #22211e;
+  --pst-color-surface: #262522;
+  --pst-color-on-surface: #302e2a;
+
+  --pst-color-text-base: #e6e1d6;
+  --pst-color-text-muted: #a39e92;
+  --pst-color-heading-color: #c9d6e2;
+
+  --pst-color-inline-code: #e0a58f;
+  --pst-color-target: #3a3425;
+  --pst-color-table-row-hover-bg: #2b2925;
+  --pst-color-border: #3a3834;
+  --pst-color-shadow: #0f0e0d;
+
+  --pst-color-info: #86aebf;
+  --pst-color-success: #a3b899;
+  --pst-color-warning: #dcb06b;
+  --pst-color-danger: #d98a86;
+}
+
+/* Soften the details */
+.bd-content pre,
+.bd-content .admonition,
+.bd-content table {
+  border-radius: 8px;
+}
+
+.admonition {
+  box-shadow: none !important;
+  border-left-width: 3px;
+}
