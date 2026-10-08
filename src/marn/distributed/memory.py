@@ -60,9 +60,11 @@ def profile_peak_memory(
         result, peak = profile_peak_memory(model.generator.generate_parameters)
         print(f"Peak: {peak / 1e6:.2f} MB")
     """
-    if device == "cuda" and torch.cuda.is_available():
+    if device.startswith("cuda") and torch.cuda.is_available():
+        torch.cuda.synchronize(device)
         torch.cuda.reset_peak_memory_stats()
         result = fn(*args, **kwargs)
+        torch.cuda.synchronize(device)
         peak_bytes = torch.cuda.max_memory_allocated()
     else:
         tracemalloc.start()

@@ -176,8 +176,6 @@ def run_lstm_experiment(
         config=config,
     )
 
-    trainer.fit()  # warm-up / multi-epoch already handled by max_epochs
-
     t0 = time.perf_counter()
     _, peak_mem = profile_peak_memory(lambda: trainer.fit(), device=device_str)
     t1 = time.perf_counter()

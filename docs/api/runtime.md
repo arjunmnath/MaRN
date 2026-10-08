@@ -1,5 +1,7 @@
 # Runtime
 
+Named parameter metadata (`ParameterSpec`, `ParameterTree`) and functional forward helpers.
+
 ```{eval-rst}
 .. currentmodule:: marn.runtime
 

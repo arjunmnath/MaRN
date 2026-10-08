@@ -1,4 +1,11 @@
-# Mapping Networks Benchmarks Report
+# Mapping Networks Benchmarks Report (withdrawn)
+
+> **Do not use these numbers.** This report predates the benchmark fixes
+> documented in [README.md](README.md). The MNIST subsets were class-ordered,
+> epoch counts differed between direct and mapped runs, and indexed CUDA
+> devices were misdetected by the memory profiler. No replacement training
+> run has been performed. Regenerate this report with
+> `python benchmarks/run_benchmarks.py` on the target hardware.
 
 This report compiles performance comparisons across parameters, peak memory, speed, and accuracy/loss for the models and strategies detailed in the paper.
 
@@ -77,4 +84,3 @@ This report compiles performance comparisons across parameters, peak memory, spe
 | Ours* (SLVT) | 107,998 | 2,048 | 0.50 | 750.5 | 91.88% |
 | Ours* + LRD (rank 8) | 107,998 | 8,192 | 0.50 | 172.4 | 90.67% |
 | Ours* + Prune 90% | 107,998 | 204 | 0.50 | 709.0 | 88.70% |
-

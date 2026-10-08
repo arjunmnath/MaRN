@@ -160,10 +160,12 @@ def run_deepfake_experiment(
                 accelerator.backward(loss)
                 optimizer.step()
 
-        train_one_epoch()  # warm-up
-
         t0 = time.perf_counter()
-        _, peak_mem = profile_peak_memory(train_one_epoch, device=str(accelerator.device))
+        def train_all_epochs() -> None:
+            for _ in range(epochs):
+                train_one_epoch()
+
+        _, peak_mem = profile_peak_memory(train_all_epochs, device=str(accelerator.device))
         t1 = time.perf_counter()
 
         model.eval()
@@ -178,7 +180,7 @@ def run_deepfake_experiment(
             "total_params": total_params,
             "trainable_params": trainable_params,
             "peak_mem_mb": max(peak_mem / 1e6, 0.5),
-            "epoch_time_ms": (t1 - t0) * 1000.0,
+            "epoch_time_ms": (t1 - t0) * 1000.0 / epochs,
             "accuracy": correct / total,
         }
 
@@ -203,8 +205,6 @@ def run_deepfake_experiment(
             loss_fn=mapping_loss_fn,
             config=config,
         )
-
-        trainer.fit()  # warm-up
 
         t0 = time.perf_counter()
         _, peak_mem = profile_peak_memory(lambda: trainer.fit(), device=device_str)

@@ -87,3 +87,15 @@ The code maps directly to the concepts defined in the paper:
   - **Smoothness Loss** ($L_{\text{smoothness}}$): penalizes the Jacobian norm of the mapper to enforce a smooth manifold (`SmoothnessLoss`).
   - **Alignment Loss** ($L_{\text{alignment}}$): maximizes alignment via cosine distance between latent vectors and weight summaries (`AlignmentLoss`).
 
+---
+
+## Documentation & cookbook
+
+- **Docs**: [mapping-networks.readthedocs.io](https://mapping-networks.readthedocs.io/en/latest/)
+- **User guide & API**: organized under the PyData Sphinx theme in `docs/`
+- **Cookbook**: eight runnable scripts in [`cookbook/`](cookbook/) (also summarized in the [Cookbook docs](https://mapping-networks.readthedocs.io/en/latest/cookbook/index.html))
+
+```bash
+poetry run python cookbook/01_single_latent_classification.py
+```
+

@@ -6,7 +6,7 @@ import time
 import torch
 import torch.nn as nn
 import torch.nn.utils.prune as prune
-from torch.utils.data import DataLoader, Subset
+from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from accelerate import Accelerator
 from marn import (
@@ -38,14 +38,10 @@ _DATA_ROOT = os.path.join(os.path.dirname(__file__), "..", "data")
 
 
 def _get_mnist_loaders(
-    train_size: int = 512,
-    val_size: int = 256,
     batch_size: int = 64,
 ) -> tuple[DataLoader[Any], DataLoader[Any]]:
     train_ds = datasets.MNIST(_DATA_ROOT, train=True, download=True, transform=_MNIST_TRANSFORM)
     val_ds = datasets.MNIST(_DATA_ROOT, train=False, download=True, transform=_MNIST_TRANSFORM)
-    train_ds = Subset(train_ds, list(range(train_size)))
-    val_ds = Subset(val_ds, list(range(val_size)))
     train_loader: DataLoader[Any] = DataLoader(
         train_ds, batch_size=batch_size, shuffle=True, num_workers=0
     )
@@ -187,8 +183,6 @@ def run_addons_experiment(
         loss_fn=mapping_loss_fn,
         config=config,
     )
-
-    trainer.fit()  # warm-up epoch
 
     t0 = time.perf_counter()
     _, peak_mem = profile_peak_memory(lambda: trainer.fit(), device=device_str)

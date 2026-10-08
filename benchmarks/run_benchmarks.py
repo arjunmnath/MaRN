@@ -58,8 +58,8 @@ def main() -> None:
         f.write("# Mapping Networks Benchmarks Report\n\n")
         f.write(
             "Performance comparisons across parameter count, peak memory, epoch time, "
-            "and accuracy/loss. All results are from **real training** on standard "
-            "benchmark datasets (no hardcoded values).\n\n"
+            "and accuracy/loss. Results are produced by the benchmark scripts using "
+            "the full MNIST splits, synthetic FakeData, and generated sine-wave data.\n\n"
         )
         f.write(
             f"> Device: `{accelerator.device}` | Mixed-precision: `{accelerator.mixed_precision}`\n\n"

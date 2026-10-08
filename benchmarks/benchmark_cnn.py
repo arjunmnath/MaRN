@@ -5,7 +5,7 @@ import os
 import time
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, Subset
+from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 from accelerate import Accelerator
 from marn import (
@@ -35,14 +35,10 @@ _DATA_ROOT = os.path.join(os.path.dirname(__file__), "..", "data")
 
 
 def _get_mnist_loaders(
-    train_size: int = 512,
-    val_size: int = 256,
     batch_size: int = 64,
 ) -> tuple[DataLoader[Any], DataLoader[Any]]:
     train_ds = datasets.MNIST(_DATA_ROOT, train=True, download=True, transform=_MNIST_TRANSFORM)
     val_ds = datasets.MNIST(_DATA_ROOT, train=False, download=True, transform=_MNIST_TRANSFORM)
-    train_ds = Subset(train_ds, list(range(train_size)))
-    val_ds = Subset(val_ds, list(range(val_size)))
     train_loader: DataLoader[Any] = DataLoader(
         train_ds, batch_size=batch_size, shuffle=True, num_workers=0
     )
@@ -134,7 +130,7 @@ def run_cnn_experiment(
 
     if strategy_name == "direct":
         trainable_params = total_params
-        optimizer = torch.optim.Adam(target_model.parameters(), lr=0.01)
+        optimizer = torch.optim.Adam(target_model.parameters(), lr=0.001)
         loss_fn = nn.CrossEntropyLoss()
 
         model, optimizer, train_loader, val_loader = accelerator.prepare(
@@ -150,11 +146,16 @@ def run_cnn_experiment(
                 accelerator.backward(loss)
                 optimizer.step()
 
-        # Warm-up epoch before timing
-        train_one_epoch()
-
         t0 = time.perf_counter()
-        _, peak_mem = profile_peak_memory(train_one_epoch, device=str(accelerator.device))
+        def train_all_epochs() -> None:
+            for _ in range(epochs):
+                train_one_epoch()
+
+        _, peak_mem = profile_peak_memory(train_all_epochs, device=str(accelerator.device))
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+            torch.mps.synchronize()
         t1 = time.perf_counter()
 
         model.eval()
@@ -169,7 +170,7 @@ def run_cnn_experiment(
             "total_params": total_params,
             "trainable_params": trainable_params,
             "peak_mem_mb": max(peak_mem / 1e6, 0.5),
-            "epoch_time_ms": (t1 - t0) * 1000.0,
+            "epoch_time_ms": (t1 - t0) * 1000.0 / epochs,
             "accuracy": correct / total,
         }
 
@@ -185,7 +186,7 @@ def run_cnn_experiment(
         )
         mapping_loss_fn = MappingLoss(task_loss=ClassificationLoss())
         device_str = str(accelerator.device)
-        config = TrainerConfig(max_epochs=epochs, learning_rate=0.01, device=device_str)
+        config = TrainerConfig(max_epochs=epochs, learning_rate=0.001, device=device_str)
 
         # Prepare raw loaders for MappingTrainer (it manages its own device placement via config)
         raw_train, raw_val = _get_mnist_loaders()
@@ -198,11 +199,12 @@ def run_cnn_experiment(
             config=config,
         )
 
-        # Warm-up
-        trainer.fit()
-
         t0 = time.perf_counter()
         _, peak_mem = profile_peak_memory(lambda: trainer.fit(), device=device_str)
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+            torch.mps.synchronize()
         t1 = time.perf_counter()
 
         mapping_model.eval()

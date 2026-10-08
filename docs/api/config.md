@@ -1,5 +1,7 @@
 # Config
 
+Pydantic configuration models and YAML loading for mapping experiments.
+
 ```{eval-rst}
 .. currentmodule:: marn.config
 
